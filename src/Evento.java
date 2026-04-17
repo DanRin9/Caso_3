@@ -1,7 +1,16 @@
 public class Evento {
     
-    private int tipoEvento; //numero seudoaleatorio entre 1 y ns (numero de servidores)
-    private int id;
+    private boolean esSospechoso; 
+    private int id; //numero seudoaleatorio entre 1 y ns (numero de servidores)
+
+    public Evento(int id){
+        this.id = id;
+    }
+
+
+    public void setTipoEvento(boolean tipoEvento){
+        this.esSospechoso = tipoEvento;
+    }
     
 
 }
