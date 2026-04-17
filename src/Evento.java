@@ -11,6 +11,13 @@ public class Evento {
     public void setTipoEvento(boolean tipoEvento){
         this.esSospechoso = tipoEvento;
     }
+
+    public int getId(){
+        return this.id;
+    }
     
+    public boolean getEsSospechoso(){
+        return this.esSospechoso;
+    }
 
 }

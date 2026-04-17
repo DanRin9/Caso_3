@@ -9,6 +9,9 @@ public class BrokerEventos extends Thread {
     @Override
     public void run(){
         
+        Evento ultimo = monitor.getUltimo();
+
+
     }
     
 }
