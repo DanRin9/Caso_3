@@ -13,7 +13,7 @@ public class BrokerAnalizador extends Thread {
     @Override
     public void run(){
         
-        Evento ultimo = monitor.getUltimo();
+        
 
 
     }

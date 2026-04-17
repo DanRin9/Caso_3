@@ -25,10 +25,6 @@ class MonitorEntradaEventos{
 
     }
 
-    public synchronized Evento getUltimo(){
-        
-        return eventos.getLast();
-    }
 
 
 

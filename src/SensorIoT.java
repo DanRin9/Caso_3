@@ -36,7 +36,7 @@ public class SensorIoT extends Thread{
     @Override
     public void run(){
         while(cantidadEventos >= cantidadActualEventos){
-            Evento eventoDepositar = generarEvento(id);
+            Evento eventoDepositar = generarEvento();
             monitor.depositarEvento(this, eventoDepositar);
         }
     }
