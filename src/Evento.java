@@ -1,18 +1,17 @@
 public class Evento {
     
     private boolean esSospechoso; 
-    private int id; //numero seudoaleatorio entre 1 y ns (numero de servidores)
+    private int tipoEvento;//numero seudoaleatorio entre 1 y ns (numero de servidores)
+    private String id; //identificador del sensor + secuencial
 
-    public Evento(int id){
+    public Evento(String id, int tipoEvento){
         this.id = id;
+        this.tipoEvento = tipoEvento;
     }
 
 
-    public void setTipoEvento(boolean tipoEvento){
-        this.esSospechoso = tipoEvento;
-    }
 
-    public int getId(){
+    public String getId(){
         return this.id;
     }
     
