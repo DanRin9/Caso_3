@@ -17,7 +17,14 @@ public class App {
     }
 
     public int generarCantidadEventos(int numeroBase, int idSensor){
+<<<<<<< HEAD
         return numeroBase * idSensor;
+||||||| parent of 8286edd (?)
+        return numeroBase*idSensor;
+=======
+        int id = idSensor + 1;
+        return numeroBase*id;
+>>>>>>> 8286edd (?)
     }
     
     public static void main(String[] args) throws Exception {
@@ -25,7 +32,15 @@ public class App {
         System.out.println(  "║      SISTEMA IoT  -  INICIO      ║");
         System.out.println(  "╚══════════════════════════════════╝\n");
 
+<<<<<<< HEAD
         App mainApp = new App(4, 3, 3, 10, 10, 5);
+||||||| parent of 8286edd (?)
+        //MAIN
+        App mainApp = new App(2,3,3,5);
+=======
+        //MAIN
+        App mainApp = new App(1,3,3,3);
+>>>>>>> 8286edd (?)
         System.out.println("╔══════════════════════════════════╗");
         System.out.println("║        CONFIGURACION DEL SISTEMA ║");
         System.out.println("╠══════════════════════════════════╣");
