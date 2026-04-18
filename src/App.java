@@ -17,8 +17,10 @@ public class App {
     }
     
     public static void main(String[] args) throws Exception {
+        System.out.println("\n\n=====INICIANDO EJECUCION===== \n\n");
         App mainApp = new App(3,5);
 
+        //Monitor de Entrada de Eventos
         MonitorEntradaEventos monitorEntrada = new MonitorEntradaEventos();
 
 
@@ -31,6 +33,7 @@ public class App {
             sensores[i] = new SensorIoT(cantidad, i+1, 1, monitorEntrada);
         }
 
+        //Analizador (Broker)
         BrokerAnalizador analizador = new BrokerAnalizador(monitorEntrada, cantidadEventosTotales);
 
         //INICIAR THREADS
@@ -38,10 +41,23 @@ public class App {
         for (int i=0;i<mainApp.cantidadSensores;i++){
             sensores[i].start();
         }
+        try{
+
+            for (int i=0;i<mainApp.cantidadSensores;i++){
+            sensores[i].join();
+            }
+            analizador.join();
+
+        }catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+
+        
         
 
 
-        System.out.println("Hello, World!");
+        System.out.println("FIN DE LA EJECUCION!");
     }
 }
 

@@ -27,11 +27,11 @@ public class BrokerAnalizador extends Thread {
         if (n % 8 == 0){
             //e.setEsSospechoso(true); 
             //implementacion de monitor buzon alertas
-            System.out.println("Evento "+e.getId()+" Sospechoso");
+            System.out.println("\n[Analizador] CLASIFICADO: Evento "+e.getId()+" Sospechoso");
         }else{
             //e.setEsSospechoso(false);
             //implementacion de monitor buzon clasificacion 
-            System.out.println("Evento "+e.getId()+" normal");
+            System.out.println("\n[Analizador] CLASIFICADO: Evento "+e.getId()+" normal");
         }
         this.eventosAnalizados++;
 
@@ -41,14 +41,18 @@ public class BrokerAnalizador extends Thread {
     public void run(){
         System.out.println("Analizador Activado.");
         while (numeroEventosEsperados > eventosAnalizados){
-            monitorEntrada.esperarEvento(this); //Hay prints aca
+            System.out.println("Entrando en While de Analizador");
 
-            Evento e = monitorEntrada.getEventos().get(eventosAnalizados); 
+            Evento e = monitorEntrada.esperarEvento(this); //Hay prints aca
+
+            System.out.println("\n[Analizador] Clasificando...\n");
             clasificarEvento(e);
-            System.out.println("Evento clasificado");
+
+            System.out.println("Evento clasificado: "+e.getId()+"\n");
         }
         
         Evento eventoFinal = generarEventoFinal();
+        System.out.println("Evento final generado\n");
 
         
 

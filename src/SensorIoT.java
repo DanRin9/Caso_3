@@ -41,9 +41,10 @@ public class SensorIoT extends Thread{
     @Override
     public void run(){
         while(cantidadEventos >= cantidadActualEventos){
+            System.out.println("Entrando en While de Sensor");
             Evento e = generarEvento();
             monitor.depositarEvento(this, e);
-            this.cantidadActualEventos++;
+            cantidadActualEventos++;
         }
     }
 

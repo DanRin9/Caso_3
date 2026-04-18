@@ -1,31 +1,45 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 class MonitorEntradaEventos{
-    private ArrayList<Evento> eventos;
+    private LinkedList<Evento> eventos;
+
 
     public MonitorEntradaEventos(){
-        this.eventos = new ArrayList<Evento>();
+        this.eventos = new LinkedList<Evento>();
     }
 
-    public ArrayList<Evento> getEventos(){
+    public synchronized LinkedList<Evento> getEventos(){
         return this.eventos;
     }
 
 
     public synchronized void depositarEvento(Thread t, Evento e){
-        System.out.println(t.getName() + "Añadiendo Evento co ID = "+e.getId());
+        System.out.println(t.getName() + " Depositando Evento al Buzon. ID = "+e.getId());
         eventos.add(e);
-        System.out.println("Notificando a Todos... \n");
-        notifyAll();
+        System.out.println("Notificando...\n");
+        try{
+            notify();
+        }catch (Exception ex) {
+            Thread.currentThread().interrupt();
+        }
+        
     }
 
-    public synchronized void esperarEvento(Thread t){
-        System.out.println(t.getName() + " esperando para analizar eventos...");
-        try {
-            wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public synchronized Evento esperarEvento(Thread t){
+        while(eventos.size() == 0){
+
+            System.out.println("[Analizador] esperando para analizar eventos...");
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+        Evento e = eventos.removeFirst();
+
+        return e;
 
 
     }
