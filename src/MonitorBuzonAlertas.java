@@ -13,6 +13,7 @@ public class MonitorBuzonAlertas {
         return this.buzonEventos;
     }
     
+
     public synchronized void depositarEnAlertas(Thread t, Evento e){
 
         buzonEventos.add(e);
