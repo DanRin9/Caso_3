@@ -9,10 +9,14 @@ public class MonitorBuzonAlertas {
         this.buzonEventos = new LinkedList<Evento>();
     }
 
-    public synchronized LinkedList<Evento> getBuzonEventos(){
-        return this.buzonEventos;
+    public synchronized Evento getFirstBuzonEventos(){
+        return this.buzonEventos.getFirst();
     }
-    
+
+    public synchronized int getSizeBuzon(){
+        return buzonEventos.size();
+    }
+
 
     public synchronized void depositarEnAlertas(Thread t, Evento e){
 
@@ -29,7 +33,7 @@ public class MonitorBuzonAlertas {
 
     
 
-    public synchronized Evento EsperarYRetirarEvento(Thread t){
+    public synchronized Evento retirarEvento(){
         
         Evento e = buzonEventos.removeFirst();
         return e;

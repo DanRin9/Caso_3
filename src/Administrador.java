@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Administrador extends Thread{
@@ -24,30 +25,37 @@ public class Administrador extends Thread{
 
     }
 
-    public Evento generarEventoFinal(){
-        Evento e = new Evento("fin", 0);
-        return e;
+    public ArrayList<Evento> generarEventosFinales(){
+        ArrayList<Evento> ar = new ArrayList<Evento>();
+
+        for(int i = 0; i < nc; i++){
+            Evento e = new Evento("fin", 0);
+            ar.add(e);
+        }
+        
+        return ar;
     }
 
     @Override
     public void run(){
-        
-        System.out.println("Admin activo!");
-        LinkedList<Evento> eventos = monitorAlertas.getBuzonEventos();
-        int tamanioViejo = eventos.size();
 
-        //Se puede asumir que eventos size no comienza siendo 0? No creo
-        while (eventos.size() != 0){
-            if (eventos.size() != tamanioViejo){
-                for (int i = 0; i < eventos.size(); i++){
-                    Evento e = eventos.removeFirst();
-                    clasificarEvento(e);
-                }
-                
+        System.out.println("\nAdmin activo!\n");
+
+        while (!(monitorAlertas.getFirstBuzonEventos().getId().equals("fin"))){ //mientras que no haya un evento final:
+            while (monitorAlertas.getSizeBuzon() == 0){ //mientras que no hayan eventos
+                System.out.println("Admin - Ceder Procesador\n");
+                Thread.yield();
             }
-            System.out.println("Admin esperando semiactivamente...");
-            Thread.yield();
+            System.out.println("Retirando evento: "+ monitorAlertas.getFirstBuzonEventos().getId());
+            monitorAlertas.retirarEvento();
+
         }
+
+        //Enviar finales a Buzon clasificacion
+        System.out.println("Admin - Generando "+nc+ " eventos finales...\n");
+        ArrayList<Evento> finales = generarEventosFinales();
+        System.out.println("Enviando a Clasificacion -> Clasificadores...\n");
+        
         
     }
     

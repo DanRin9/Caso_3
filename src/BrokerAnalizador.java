@@ -53,8 +53,10 @@ public class BrokerAnalizador extends Thread {
 
         Evento eventoFinal = generarEventoFinal();
         System.out.println("[BROKER  ]  ◆ Evento final generado.\n");
-
         
+        System.out.println("[BROKER  ]    Enviando a Buzon de Alertas -> Administrador...\n");
+        monitorAlertas.depositarEnAlertas(this, eventoFinal);
+        System.out.println("[BROKER  ]    Evento final enviado!\n\n");
 
     }
     
