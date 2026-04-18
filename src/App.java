@@ -24,6 +24,8 @@ public class App {
 
         //Monitor de Entrada de Eventos
         MonitorEntradaEventos monitorEntrada = new MonitorEntradaEventos();
+        MonitorBuzonAlertas monitorAlertas = new MonitorBuzonAlertas();
+        MonitorBuzonClasificacion monitorClasificacion = new MonitorBuzonClasificacion(10); // Tamaño limitado
 
 
         //CREAR SENSORES
@@ -36,7 +38,7 @@ public class App {
         }
 
         //Analizador (Broker)
-        BrokerAnalizador analizador = new BrokerAnalizador(monitorEntrada, cantidadEventosTotales);
+        BrokerAnalizador analizador = new BrokerAnalizador(monitorEntrada, cantidadEventosTotales, monitorAlertas, monitorClasificacion);
 
         //INICIAR THREADS
         analizador.start();
@@ -45,7 +47,7 @@ public class App {
         }
 
 
-        //ESPERAR a todos los THREADS
+        //ESPERAR a TODOS los THREADS
         try{
 
             for (int i=0;i<mainApp.cantidadSensores;i++){
