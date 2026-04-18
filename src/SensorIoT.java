@@ -45,7 +45,7 @@ public class SensorIoT extends Thread{
             System.out.println("[SENSOR-" + id + "]  • Generando evento...");
             Evento e = generarEvento();
             monitor.depositarEvento(this, e);
-            System.out.println("[SENSOR-" + id + "]  ✓ Evento depositado.");
+            System.out.println("[SENSOR-" + id + "]  ✓ Evento depositado y analizador notificado.");
             cantidadActualEventos++;
         }
     }

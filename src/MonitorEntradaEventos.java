@@ -14,7 +14,7 @@ class MonitorEntradaEventos{
 
 
     public synchronized void depositarEvento(Thread t, Evento e){
-        System.out.println("[MONITOR ]  ↓ " + t.getName() + "  →  Evento " + e.getId() + " depositado.");
+        System.out.println("[MONITOR ]  ↓ " + t.getName() + "  →  Evento " + e.getId() + " depositandose...");
         eventos.add(e);
 
         System.out.println("[MONITOR ]  ↑ Notificando al analizador...\n");
