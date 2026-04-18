@@ -14,6 +14,10 @@ public class Evento {
     public String getId(){
         return this.id;
     }
+
+    public void setEsSospechoso(boolean es){
+        this.esSospechoso = es;
+    }
     
     public boolean getEsSospechoso(){
         return this.esSospechoso;

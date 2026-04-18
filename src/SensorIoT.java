@@ -1,3 +1,4 @@
+
 public class SensorIoT extends Thread{
 
     private int cantidadEventos; //Valor base * id
@@ -33,11 +34,16 @@ public class SensorIoT extends Thread{
         return (int)(Math.random() * limite) + 1;
     }
 
+    public int getid(){
+        return this.id;
+    }
+
     @Override
     public void run(){
         while(cantidadEventos >= cantidadActualEventos){
-            Evento eventoDepositar = generarEvento();
-            monitor.depositarEvento(this, eventoDepositar);
+            Evento e = generarEvento();
+            monitor.depositarEvento(this, e);
+            this.cantidadActualEventos++;
         }
     }
 
