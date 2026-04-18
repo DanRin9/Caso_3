@@ -29,6 +29,7 @@ class MonitorEntradaEventos{
     public synchronized Evento esperarEvento(Thread t){
         while(eventos.size() == 0){
 
+            
             System.out.println("[Analizador] esperando para analizar eventos...");
             try {
                 wait();
