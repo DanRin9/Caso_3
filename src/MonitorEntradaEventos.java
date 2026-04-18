@@ -37,7 +37,7 @@ class MonitorEntradaEventos{
             }
         }
 
-        System.out.println("[MONITOR ]  → Entregando evento al broker  (cola: " + eventos.size() + " → " + (eventos.size()-1) + ")");
+        
         Evento e = eventos.removeFirst();
 
         return e;
