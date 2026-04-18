@@ -1,10 +1,14 @@
 public class BrokerAnalizador extends Thread {
 
-    private MonitorEntradaEventos monitor;
+    private MonitorEntradaEventos monitorEntrada;
+    private MonitorBuzonAlertas monitorAlertas;
+    private MonitorBuzonClasificacion monitorClasificacion;
+    
     private int numeroEventosEsperados;
+    private int eventosAnalizados;
 
-    public BrokerAnalizador(MonitorEntradaEventos monitor, int numeroEventosEsperados){
-        this.monitor = monitor;
+    public BrokerAnalizador(MonitorEntradaEventos monitorEntrada, int numeroEventosEsperados){
+        this.monitorEntrada = monitorEntrada;
         this.numeroEventosEsperados = numeroEventosEsperados;
     }
 
@@ -14,24 +18,33 @@ public class BrokerAnalizador extends Thread {
         }
     
 
-    public boolean clasificarEvento(Evento e){
+    public void clasificarEvento(Evento e){
         //generar un numero entre 0 y 200 y si es multiplo de 8 el evento es anomalo -> buzon alertas.
         int n = (int)(Math.random())*200;
-        
-        if (n % 8 == 0){
-            e.setEsSospechoso(true);
-        }else{
-            e.setEsSospechoso(false);
-        }
 
-        return false;
+        if (n % 8 == 0){
+            //e.setEsSospechoso(true); 
+            //implementacion de monitor buzon alertas
+        }else{
+            //e.setEsSospechoso(false);
+            //implementacion de monitor buzon clasificacion 
+        }
+        this.eventosAnalizados++;
+
     }
 
     @Override
     public void run(){
+        System.out.println("Analizador Activado.");
+        while (numeroEventosEsperados > eventosAnalizados){
+            monitorEntrada.esperarEvento(this); //Hay prints aca
+            clasificarEvento(EVENTO);
+            System.out.println("Evento clasificado");
+        }
         
-        
+        Evento eventoFinal = generarEventoFinal();
 
+        
 
     }
     

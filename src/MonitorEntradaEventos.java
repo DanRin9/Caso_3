@@ -7,6 +7,11 @@ class MonitorEntradaEventos{
         this.eventos = new ArrayList<Evento>();
     }
 
+    public ArrayList<Evento> getEventos(){
+        return this.eventos;
+    }
+
+
     public synchronized void depositarEvento(Thread t, Evento e){
         System.out.println(t.getName() + "Añadiendo Evento co ID = "+e.getId());
         eventos.add(e);
