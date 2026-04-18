@@ -6,6 +6,7 @@ class MonitorBuzonClasificacion{
     }
 
     public synchronized void depositarEnClasificacion(Thread t, Evento e){
+        System.out.println("[CLASIF  ]  ↓ " + t.getName() + "  →  Depositando evento " + e.getId() + " en buzon de clasificacion.");
 
     }
 }

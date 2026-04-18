@@ -18,8 +18,9 @@ public class Administrador extends Thread{
         int n = (int)(Math.random())*20;
         if (n % 4 == 0){
             //monitorClasificacion.depositar
+            System.out.println("[ADMIN   ]  ✓ Evento " + e.getId() + " CLASIFICADO  →  depositando en buzon clasificacion.\n");
         }else{
-            System.out.println("!Evento Decsartado.");
+            System.out.println("[ADMIN   ]  ✗ Evento " + e.getId() + " DESCARTADO.\n");
         }
 
 
@@ -39,23 +40,30 @@ public class Administrador extends Thread{
     @Override
     public void run(){
 
-        System.out.println("\nAdmin activo!\n");
+        System.out.println("\n[ADMIN   ]  ◆ Administrador activo.\n");
+
+        System.out.println("[ADMIN   ]  ~ Esperando primer evento en buzon de alertas...");
+        while (monitorAlertas.getSizeBuzon() == 0){
+            Thread.yield();
+        }
+        System.out.println("[ADMIN   ]  ✓ Primer evento detectado. Comenzando procesamiento.\n");
 
         while (!(monitorAlertas.getFirstBuzonEventos().getId().equals("fin"))){ //mientras que no haya un evento final:
-            while (monitorAlertas.getSizeBuzon() == 0){ //mientras que no hayan eventos
-                System.out.println("Admin - Ceder Procesador\n");
+            if (monitorAlertas.getSizeBuzon() == 0){ //si no hay eventos
+                System.out.println("[ADMIN   ]  ~ Buzon vacio, cediendo procesador...\n");
                 Thread.yield();
             }
-            System.out.println("Retirando evento: "+ monitorAlertas.getFirstBuzonEventos().getId());
+            System.out.println("[ADMIN   ]  ↓ Retirando evento: " + monitorAlertas.getFirstBuzonEventos().getId() + "  del buzon de alertas.");
             monitorAlertas.retirarEvento();
+            System.out.println("[ADMIN   ]  ✓ Evento retirado.\n");
 
         }
 
         //Enviar finales a Buzon clasificacion
-        System.out.println("Admin - Generando "+nc+ " eventos finales...\n");
+        System.out.println("[ADMIN   ]  ◆ Generando " + nc + " eventos finales para clasificadores...");
         ArrayList<Evento> finales = generarEventosFinales();
-        System.out.println("Enviando a Clasificacion -> Clasificadores...\n");
-        
+        System.out.println("[ADMIN   ]  → Enviando eventos finales a Clasificacion...\n");
+
         
     }
     

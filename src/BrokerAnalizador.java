@@ -28,13 +28,14 @@ public class BrokerAnalizador extends Thread {
 
         if (n % 8 == 0){
             monitorAlertas.depositarEnAlertas(this, e);
-            System.out.println("[BROKER  ] !! SOSPECHOSO : Evento " + e.getId());
+            System.out.println("[BROKER  ]  !! SOSPECHOSO : Evento " + e.getId() + "  →  enviado a alertas.");
         }else{
             //e.setEsSospechoso(false);
             //implementacion de monitor buzon clasificacion
-            System.out.println("[BROKER  ]  ✓ NORMAL     : Evento " + e.getId());
+            System.out.println("[BROKER  ]   ✓ NORMAL     : Evento " + e.getId() + "  →  descartado (sin anomalia).");
         }
         this.eventosAnalizados++;
+        System.out.println("[BROKER  ]   Progreso: " + this.eventosAnalizados + "/" + this.numeroEventosEsperados + " eventos analizados.\n");
 
     }
 
