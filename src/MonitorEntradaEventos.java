@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 class MonitorEntradaEventos{
@@ -15,9 +14,10 @@ class MonitorEntradaEventos{
 
 
     public synchronized void depositarEvento(Thread t, Evento e){
-        System.out.println(t.getName() + " Depositando Evento al Buzon. ID = "+e.getId());
+        System.out.println("[MONITOR ]  ↓ " + t.getName() + "  →  Evento " + e.getId() + " depositado.");
         eventos.add(e);
-        System.out.println("Notificando...\n");
+
+        System.out.println("[MONITOR ]  ↑ Notificando al analizador...\n");
         try{
             notify();
         }catch (Exception ex) {
@@ -29,8 +29,8 @@ class MonitorEntradaEventos{
     public synchronized Evento esperarEvento(Thread t){
         while(eventos.size() == 0){
 
-            
-            System.out.println("[Analizador] esperando para analizar eventos...");
+
+            System.out.println("[BROKER  ]  ~ Esperando eventos...");
             try {
                 wait();
             } catch (InterruptedException e) {

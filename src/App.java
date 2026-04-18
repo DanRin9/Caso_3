@@ -17,7 +17,9 @@ public class App {
     }
     
     public static void main(String[] args) throws Exception {
-        System.out.println("\n\n=====INICIANDO EJECUCION===== \n\n");
+        System.out.println("\n╔══════════════════════════════════╗");
+        System.out.println(  "║      SISTEMA IoT  -  INICIO      ║");
+        System.out.println(  "╚══════════════════════════════════╝\n");
         App mainApp = new App(3,5);
 
         //Monitor de Entrada de Eventos
@@ -41,6 +43,9 @@ public class App {
         for (int i=0;i<mainApp.cantidadSensores;i++){
             sensores[i].start();
         }
+
+
+        //ESPERAR a todos los THREADS
         try{
 
             for (int i=0;i<mainApp.cantidadSensores;i++){
@@ -56,8 +61,10 @@ public class App {
         
         
 
-
-        System.out.println("FIN DE LA EJECUCION!");
+        //FIN PAPÁ!
+        System.out.println("\n╔══════════════════════════════════╗");
+        System.out.println(  "║      FIN DE LA EJECUCION         ║");
+        System.out.println(  "╚══════════════════════════════════╝\n");
     }
 }
 
