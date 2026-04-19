@@ -14,6 +14,9 @@ public class Evento {
     public String getId(){
         return this.id;
     }
+    public int getTipoEvento(){
+    return this.tipoEvento;
+    }
 
     public void setEsSospechoso(boolean es){
         this.esSospechoso = es;

@@ -6,19 +6,18 @@ public class SensorIoT extends Thread{
     private int id; //secuencial
     private int ns;
     private MonitorEntradaEventos monitor;
-    private static ContadorEventos ids;
+    private static ContadorEventos ids = new ContadorEventos(0); //iniciarlo afuera para que el primero sea 1
 
     public SensorIoT(int cantidadEventos, int id, int ns, MonitorEntradaEventos monitor){
         this.cantidadEventos = cantidadEventos;
         this.id = id;
         this.monitor = monitor;
         this.ns = ns;
-        ids = new ContadorEventos(0);
     }
 
     public Evento generarEvento(){
         String id = generarIdEvento();
-        int tipoEvento = generarSeudoelatorio();
+        int tipoEvento = generarSeudoaleatorio();
         Evento e = new Evento(id, tipoEvento);
         return e;
     }
@@ -28,10 +27,9 @@ public class SensorIoT extends Thread{
         return this.id + "."+ids.getContador();
     }
 
-    public int generarSeudoelatorio(){
+    public int generarSeudoaleatorio(){
         //entre 1 y ns, seudoaleatorio
-        int limite = ns -1;
-        return (int)(Math.random() * limite) + 1;
+        return (int)(Math.random() * ns) + 1; //asegura numero entre 1 y ns
     }
 
     public int getid(){
@@ -41,7 +39,7 @@ public class SensorIoT extends Thread{
     @Override
     public void run(){
         System.out.println("[SENSOR-" + id + "]  ◆ Sensor iniciado.");
-        while(cantidadEventos >= cantidadActualEventos){
+        while(cantidadActualEventos < cantidadEventos){
             System.out.println("[SENSOR-" + id + "]  • Generando evento...");
             Evento e = generarEvento();
             monitor.depositarEvento(this, e);

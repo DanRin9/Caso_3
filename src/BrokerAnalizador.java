@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class BrokerAnalizador extends Thread {
 
     private MonitorEntradaEventos monitorEntrada;
@@ -13,52 +11,44 @@ public class BrokerAnalizador extends Thread {
         this.monitorEntrada = monitorEntrada;
         this.numeroEventosEsperados = numeroEventosEsperados;
         this.monitorAlertas = ma;
-        this.monitorClasificacion =mc;
+        this.monitorClasificacion = mc;
     }
 
     public Evento generarEventoFinal(){
         Evento eFinal = new Evento("fin", 0);
         return eFinal;
-        }
-    
+    }
 
-    public void clasificarEvento(Evento e){
-        //generar un numero entre 0 y 200 y si es multiplo de 8 el evento es anomalo -> buzon alertas.
-        int n = (int)(Math.random())*200;
-
+    public void clasificarEvento(Evento e) throws InterruptedException {
+        int n = (int)(Math.random() * 200);
         if (n % 8 == 0){
             monitorAlertas.depositarEnAlertas(this, e);
             System.out.println("[BROKER  ]  !! SOSPECHOSO : Evento " + e.getId() + "  →  enviado a alertas.");
-        }else{
-            //e.setEsSospechoso(false);
-            //implementacion de monitor buzon clasificacion
-            System.out.println("[BROKER  ]   ✓ NORMAL     : Evento " + e.getId() + "  →  descartado (sin anomalia).");
+        } else {
+            monitorClasificacion.depositarEnClasificacion(this, e);
+            System.out.println("[BROKER  ]   ✓ NORMAL     : Evento " + e.getId() + "  →  enviado a clasificacion.");
         }
         this.eventosAnalizados++;
         System.out.println("[BROKER  ]   Progreso: " + this.eventosAnalizados + "/" + this.numeroEventosEsperados + " eventos analizados.\n");
-
     }
 
     @Override
     public void run(){
         System.out.println("[BROKER  ]  ◆ Analizador activado.");
         while (numeroEventosEsperados > eventosAnalizados){
-
-            Evento e = monitorEntrada.esperarEvento(this); //Hay prints aca
-
-            System.out.println("[BROKER  ]  → Clasificando evento " + e.getId() + "...");
-            clasificarEvento(e);
-
-            System.out.println("[BROKER  ]  ✓ Evento " + e.getId() + " procesado.\n");
+            try {
+                Evento e = monitorEntrada.esperarEvento(this);
+                System.out.println("[BROKER  ]  → Clasificando evento " + e.getId() + "...");
+                clasificarEvento(e);
+                System.out.println("[BROKER  ]  ✓ Evento " + e.getId() + " procesado.\n");
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
         }
 
         Evento eventoFinal = generarEventoFinal();
         System.out.println("[BROKER  ]  ◆ Evento final generado.\n");
-        
-        System.out.println("[BROKER  ]    Enviando a Buzon de Alertas -> Administrador...\n");
         monitorAlertas.depositarEnAlertas(this, eventoFinal);
         System.out.println("[BROKER  ]    Evento final enviado!\n\n");
-
     }
-    
 }
