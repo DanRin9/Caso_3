@@ -77,14 +77,20 @@ public class App {
         }
         System.out.println("   Total eventos esperados: " + cantidadEventosTotales + "\n");
 
+        // CONTADORES DE VERIFICACION
+        ContadorEventos cAlertas      = new ContadorEventos(0);
+        ContadorEventos cNormales     = new ContadorEventos(0);
+        ContadorEventos cClasificados = new ContadorEventos(0);
+        ContadorEventos cDescartados  = new ContadorEventos(0);
+
         // CREAR BROKER
         System.out.println(">> Creando BrokerAnalizador...");
-        BrokerAnalizador analizador = new BrokerAnalizador(monitorEntrada, cantidadEventosTotales, monitorAlertas, monitorClasificacion);
+        BrokerAnalizador analizador = new BrokerAnalizador(monitorEntrada, cantidadEventosTotales, monitorAlertas, monitorClasificacion, cAlertas, cNormales);
         System.out.println("   [OK] Broker creado.\n");
 
         // CREAR ADMINISTRADOR
         System.out.println(">> Creando Administrador...");
-        Administrador soyAdmin = new Administrador(mainApp.nc, monitorAlertas, monitorClasificacion);
+        Administrador soyAdmin = new Administrador(mainApp.nc, monitorAlertas, monitorClasificacion, cClasificados, cDescartados);
         System.out.println("   [OK] Administrador creado.\n");
 
         // CREAR CLASIFICADORES
@@ -152,6 +158,31 @@ public class App {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+
+        // VERIFICACION DE RESULTADOS
+        int totalGenerados  = cantidadEventosTotales;
+        int alertas         = cAlertas.getContador();
+        int normales        = cNormales.getContador();
+        int clasificados    = cClasificados.getContador();
+        int descartados     = cDescartados.getContador();
+
+        boolean ok1 = (alertas + normales) == totalGenerados;
+        boolean ok2 = (clasificados + descartados) == alertas;
+
+        System.out.println("════════════════════════════════════");
+        System.out.println("  VERIFICACION DE RESULTADOS");
+        System.out.println("════════════════════════════════════");
+        System.out.println("  Eventos generados (esperados) : " + totalGenerados);
+        System.out.println("  → Alertas (broker)            : " + alertas);
+        System.out.println("  → Normales (broker)           : " + normales);
+        System.out.println("  " + (ok1 ? "[OK]  " : "[FAIL]") + " Alertas + Normales == Generados  (" + alertas + " + " + normales + " == " + totalGenerados + ")");
+        System.out.println();
+        System.out.println("  → Clasificados por admin      : " + clasificados);
+        System.out.println("  → Descartados por admin       : " + descartados);
+        System.out.println("  " + (ok2 ? "[OK]  " : "[FAIL]") + " Clasif + Descart == Alertas      (" + clasificados + " + " + descartados + " == " + alertas + ")");
+        System.out.println();
+        System.out.println("  Total eventos a clasificadores : " + (normales + clasificados));
+        System.out.println("════════════════════════════════════\n");
 
         System.out.println("\n╔══════════════════════════════════╗");
         System.out.println(  "║      FIN DE LA EJECUCION         ║");

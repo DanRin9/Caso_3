@@ -4,10 +4,15 @@ public class Administrador extends Thread {
     private MonitorBuzonAlertas monitorAlertas;
     private MonitorBuzonClasificacion monitorClasificacion;
 
-    public Administrador(int nc, MonitorBuzonAlertas ma, MonitorBuzonClasificacion mc){
+    private ContadorEventos cClasificados;
+    private ContadorEventos cDescartados;
+
+    public Administrador(int nc, MonitorBuzonAlertas ma, MonitorBuzonClasificacion mc, ContadorEventos cClasificados, ContadorEventos cDescartados){
         this.nc = nc;
         this.monitorAlertas = ma;
         this.monitorClasificacion = mc;
+        this.cClasificados = cClasificados;
+        this.cDescartados = cDescartados;
     }
 
     public void clasificarEvento(Evento e) throws InterruptedException {
@@ -15,8 +20,10 @@ public class Administrador extends Thread {
         System.out.println(n);
         if (n % 4 == 0){
             monitorClasificacion.depositarEnClasificacion(this, e);
+            cClasificados.incrementar();
             System.out.println("[ADMIN   ]  ✓ Evento " + e.getId() + " CLASIFICADO  →  depositado en buzon clasificacion.\n");
         } else {
+            cDescartados.incrementar();
             System.out.println("[ADMIN   ]  ✗ Evento " + e.getId() + " DESCARTADO.\n");
         }
     }
