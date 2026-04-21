@@ -8,9 +8,6 @@ class MonitorEntradaEventos{
         this.eventos = new LinkedList<Evento>();
     }
 
-    public synchronized LinkedList<Evento> getEventos(){
-        return this.eventos;
-    }
 
 
     public synchronized void depositarEvento(Thread t, Evento e){

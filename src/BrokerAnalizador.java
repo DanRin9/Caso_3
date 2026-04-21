@@ -22,6 +22,7 @@ public class BrokerAnalizador extends Thread {
     public void clasificarEvento(Evento e) throws InterruptedException {
         int n = (int)(Math.random() * 200);
         if (n % 8 == 0){
+            System.out.println("[BROKER  ]   ✓ ALERTA     : Evento " + e.getId() + "  →  ANOMALO.");
             monitorAlertas.depositarEnAlertas(this, e);
             System.out.println("[BROKER  ]  !! SOSPECHOSO : Evento " + e.getId() + "  →  enviado a alertas.");
         } else {

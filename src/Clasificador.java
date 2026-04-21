@@ -3,7 +3,7 @@ public class Clasificador extends Thread {
     private int id;
     private MonitorBuzonClasificacion monitorClasificacion;
     private MonitorBuzonConsolidacion[] buzonesConsolidacion;
-    private static int clasificadoresActivos; // compartido entre todos
+    private static int clasificadoresActivos;
     private int ns;
 
     public Clasificador(int id, MonitorBuzonClasificacion mc, MonitorBuzonConsolidacion[] buzonesConsolidacion, int ns){
@@ -42,14 +42,14 @@ public class Clasificador extends Thread {
                     System.out.println("[CLASIF-" + id + "]  ◆ Evento fin recibido. Terminando...");
                     activo = false;
                 } else {
-                    int servidor = e.getTipoEvento() - 1; // tipoEvento entre 1 y ns entonces servidor entre 0 y ns-1
+                    int servidor = e.getTipoEvento() - 1;
                     System.out.println("[CLASIF-" + id + "]  → Evento " + e.getId() + " enviado a servidor " + (servidor+1));
                     buzonesConsolidacion[servidor].depositarEnConsolidacion(this, e);
                 }
             }
             decrementarClasificadores();
             if (getClasificadoresActivos() == 0){
-                enviarEventoFin(); // el último manda los fins a servidores
+                enviarEventoFin();
             }
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();

@@ -32,10 +32,6 @@ public class SensorIoT extends Thread{
         return (int)(Math.random() * ns) + 1; //asegura numero entre 1 y ns
     }
 
-    public int getid(){
-        return this.id;
-    }
-
     @Override
     public void run(){
         System.out.println("[SENSOR-" + id + "]  ◆ Sensor iniciado.");
