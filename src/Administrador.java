@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Administrador extends Thread {
 
     private int nc;
@@ -12,7 +10,7 @@ public class Administrador extends Thread {
         this.monitorClasificacion = mc;
     }
 
-    public void clasificarEvento(Evento e){
+    public void clasificarEvento(Evento e) throws InterruptedException {
         int n = (int)(Math.random()*20);
         System.out.println(n);
         if (n % 4 == 0){
@@ -20,7 +18,6 @@ public class Administrador extends Thread {
             System.out.println("[ADMIN   ]  ✓ Evento " + e.getId() + " CLASIFICADO  →  depositado en buzon clasificacion.\n");
         } else {
             System.out.println("[ADMIN   ]  ✗ Evento " + e.getId() + " DESCARTADO.\n");
-            
         }
     }
 
@@ -37,39 +34,35 @@ public class Administrador extends Thread {
     public void run(){
         System.out.println("\n[ADMIN   ]  ◆ Administrador activo.\n");
 
-        System.out.println("[ADMIN   ]  ~ Esperando primer evento en buzon de alertas...");
-        while (monitorAlertas.getSizeBuzon() == 0){
-            Thread.yield();
-        }
-        System.out.println("[ADMIN   ]  ✓ Primer evento detectado. Comenzando procesamiento.\n");
-
-
-        while (!(monitorAlertas.getFirstBuzonEventos().getId().equals("fin"))){ //mientras que no haya un evento final:
-            if (monitorAlertas.getSizeBuzon() == 0){ //si no hay eventos
-                System.out.println("[ADMIN   ]  ~ Buzon vacio, cediendo procesador...\n");
+        try {
+            System.out.println("[ADMIN   ]  ~ Esperando primer evento en buzon de alertas...");
+            while (monitorAlertas.estaVacio()){
                 Thread.yield();
             }
-            System.out.println("[ADMIN   ]  ↓ Retirando y clasificando evento: " + monitorAlertas.getFirstBuzonEventos().getId() + "  del buzon de alertas.");
-            Evento e = monitorAlertas.retirarEvento();
-            clasificarEvento(e);
-            System.out.println("[ADMIN   ]  ✓ Evento retirado y clasificado.\n");
+            System.out.println("[ADMIN   ]  ✓ Primer evento detectado. Comenzando procesamiento.\n");
 
-            while (monitorAlertas.getSizeBuzon() == 0){
-                Thread.yield();
+            while (true) {
+                if (monitorAlertas.estaVacio()){
+                    
+                    Thread.yield();
+                    continue;
+                }
+                Evento e = monitorAlertas.retirarEvento(this);
+                if (e.getId().equals("fin")){
+                    break;
+                }
+                System.out.println("[ADMIN   ]  ↓ Clasificando evento: " + e.getId() + "  del buzon de alertas.");
+                clasificarEvento(e);
+                System.out.println("[ADMIN   ]  ✓ Evento retirado y clasificado.\n");
             }
-            if (monitorAlertas.getSizeBuzon() == 0){
-                break;
-            }
 
+            System.out.println("[ADMIN   ]  ◆ Generando " + nc + " eventos finales para clasificadores...");
+            generarEventosFinales();
+            System.out.println("[ADMIN   ]  → Enviando eventos finales a Clasificacion...\n");
 
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
         }
-
-        //Enviar finales a Buzon clasificacion
-        System.out.println("[ADMIN   ]  ◆ Generando " + nc + " eventos finales para clasificadores...");
-        ArrayList<Evento> finales = generarEventosFinales();
-        System.out.println("[ADMIN   ]  → Enviando eventos finales a Clasificacion...\n");
-
-        
     }
-    
+
 }

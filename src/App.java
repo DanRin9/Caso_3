@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class App {
     
     private int ni; // # Sensores
@@ -25,7 +28,15 @@ public class App {
         System.out.println(  "║      SISTEMA IoT  -  INICIO      ║");
         System.out.println(  "╚══════════════════════════════════╝\n");
 
-        App mainApp = new App(4, 3, 3, 10, 10, 5);
+        BufferedReader br = new BufferedReader(new FileReader(args[0]));
+        int ni   = Integer.parseInt(br.readLine().trim());
+        int neb  = Integer.parseInt(br.readLine().trim());
+        int nc   = Integer.parseInt(br.readLine().trim());
+        int ns   = Integer.parseInt(br.readLine().trim());
+        int tam1 = Integer.parseInt(br.readLine().trim());
+        int tam2 = Integer.parseInt(br.readLine().trim());
+        br.close();
+        App mainApp = new App(ni, nc, ns, neb, tam1, tam2);
         System.out.println("╔══════════════════════════════════╗");
         System.out.println("║        CONFIGURACION DEL SISTEMA ║");
         System.out.println("╠══════════════════════════════════╣");
